@@ -5,6 +5,8 @@
 	callRunnerURL 
 	
 	Kullanım şekli;
+	dynTranURL değişkeni sistemde oluşturulan dinamik transaction'ın adı olmalı. Aksi durumda çalışmayacaktır.
+	Örnek bir transaction Aslanoba MII sistemi içersinde KucukBas/HayvanStatuDegistir/dynamicFunctionCall alınabilir.
 
 	var a = callDynamicRFC(<rfc_name>, <inputObject>)
 	
