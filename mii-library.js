@@ -72,6 +72,38 @@ var createIlluminatorSQL = function(queryTemplate,input){
 	}
 	return url;
 }
+var callRunnerURL = function(transaction,input,output){
+	var url = createRunnerURL(transaction,input,output);
+	var return_xml;
+	$.get(url,function(data){ return_xml = data; },"xml");
+	return return_xml;
+}
+var callSQL = function(queryTemplate,input){
+	var url = createIlluminatorSQL(queryTemplate,input);
+	var return_xml;
+	$.get(url,function(data){ return_xml = data; },"xml");
+	return return_xml;
+}
+var callSQLFromURL = function(queryTemplate,src){
+	var url = createIlluminatorURL(queryTemplate,src);
+	var return_xml;
+	$.get(url,function(data){ return_xml = data; },"xml");
+	return return_xml;
+}
+var isError = function(xmlObj){
+	if( $("error",xmlObj).text() == "" || $("error",xmlObj).text() == "---" ){
+		return false;
+	}else{
+		return true;
+	}
+}
+var getError = function(xmlObj){
+	if( $("error",xmlObj).text() == "" || $("error",xmlObj).text() == "---" ){
+		return "";
+	}else{
+		return $("error",xmlObj).text()
+	}
+}
 function CallPostURL(transaction,input,output,bool_async,method){
 	bool_async	= bool_async ? bool_async : false;
 //	method		= method ? method : "GET";
