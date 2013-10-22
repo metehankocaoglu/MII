@@ -214,13 +214,33 @@ var TableList = function(tableElem,tablePlacement,xml,emptyList){
 			}else if(a.substr(0,16) == "code_html_append"){
 				rowArray.push( eval( replaceString(tablePlacement[a],b) )[0].outerHTML );
 			}else if(a.substr(0,4) == "html"){
-				rowArray.push( replaceString(tablePlacement[a],b) );
+				rowArray.push( findFunctionFromStringAndEvalueate( replaceString(tablePlacement[a],b) ) );
 			}else if( a.substr(0,4) == "code"){
 				rowArray.push( eval( replaceString(tablePlacement[a],b) ) );
 			}
 		}
 		$(tableElem).dataTable().fnAddData(rowArray);
 	});
+}
+function findFunctionFromStringAndEvalueate(text){
+	var retText = "";
+	retText = text;
+	var resAry = text.split("#");
+	for( var a in resAry ){
+		
+		var functionName = resAry[a].substr(0,resAry[a].indexOf("("));
+		
+		if( typeof window[functionName] == "function" ){
+			resAry[a] = eval(resAry[a]);
+		}
+	}
+	for( var b in resAry){
+		if( b == 0 ){
+			retText = "";
+		}
+		retText = retText + resAry[b];
+	}
+	return retText;
 }
 var isBrowser =  {
 	IE : function(){
