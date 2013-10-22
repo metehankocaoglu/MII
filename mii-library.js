@@ -222,6 +222,41 @@ var TableList = function(tableElem,tablePlacement,xml,emptyList){
 		$(tableElem).dataTable().fnAddData(rowArray);
 	});
 }
+function TableList(tableElem,tablePlacement,xml,loopLine,emptyList){
+	//	loopLine alabileceği değerler: item ya da Row olmalı
+	emptyList = emptyList == null?true:emptyList;
+	var groupObj = new Object();
+	if( emptyList ){
+		$("tbody tr",tableElem).remove();
+	}
+	$(loopLine,xml).each(function(a,b){
+		if( a % 2 ){
+			var className = "even";
+		}else{
+			var className = "odd";
+		}
+		var rowArray = $("<tr>").addClass(className);
+		for(var c in tablePlacement ){
+			if( c.substr(0,4) != "html" && c.substr(0,4) != "code" && c.substr(0,16) != "code_html_append" && c.substr(0,5) != "group"){
+				rowArray.append($("<td>").html($(c,b).text()));
+			}else if(c.substr(0,16) == "code_html_append"){
+				rowArray.append($("<td>").html($( eval( replaceString(tablePlacement[c],b) )[0].outerHTML) ) ) ;
+			}else if(c.substr(0,4) == "html"){
+				rowArray.append($("<td>").html( findFunctionFromStringAndEvalueate(replaceString(tablePlacement[c],b) ) ) );
+			}else if( c.substr(0,4) == "code"){
+				rowArray.append($("<td>").html( eval( replaceString(tablePlacement[c],b) ) ) );
+			}else if( c.substr(0,5) == "group"){
+				groupObj[replaceString(tablePlacement[c],b)] = "";
+			}
+		}
+		$(tableElem).append(rowArray);
+	});
+	if( groupObj ){
+		for( var a in groupObj){
+			$("input[type=checkbox]." + a + ":not(:first())").remove();
+		}
+	}
+}
 function findFunctionFromStringAndEvalueate(text){
 	var retText = "";
 	retText = text;
