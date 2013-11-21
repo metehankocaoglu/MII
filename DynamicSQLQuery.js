@@ -1,7 +1,6 @@
 // JavaScript Document
 
 /*
-        Gerekli framework jQuery 1.x
         Bu fonksiyonun çalışması için gerekli olan fonksiyonlar şunlardır;
         createSQLURL  && QueryXML --> bu yapı için oluşturuldu 
         
